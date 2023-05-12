@@ -4,6 +4,7 @@ namespace Application;
 readonly final class ThreadData {
   public function __construct(
     public string $userName,
+    public string $id,
     public string $title,
     public string $dateTime,
     public array $entries

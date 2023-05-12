@@ -10,8 +10,12 @@ final class ThreadsQuery {
   public function execute() : array {
     $res = [];
     foreach ($this->threadRepository->getAllThreads() as $t) {
-      $res[] = new ThreadData($t->getUserName(), $t->getTitle(), $t->getDateTime(), $t->getEntries());
+      $entries = $t->getEntries();      
+      foreach($entries as $e){
+        $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getDateTime(), $e->getText());
+      }
+      $res[] = new ThreadData($t->getUserName(), $t->getId(), $t->getTitle(), $t->getDateTime(), $resEntries);
     }
-    return $res; //array of ThraedData
+    return $res; //array of ThraedData with EntryData arrays
   }
 }

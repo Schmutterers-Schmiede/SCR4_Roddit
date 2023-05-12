@@ -6,7 +6,13 @@
   <?php if ($data['threads'] !== null) : ?>
     <?php foreach ($data['threads'] as $thread) : ?>
       <tr>
-        <td><?php $htmlOut($thread->title); ?></td>
+        <td><strong><?php $link($thread->title, 'ThreadDetail', 'Thread', ['tid' => $thread->id],  cssClass: 'nav-link'); ?></strong></td>
+        <td>
+          Last entry posted by: <strong><?php $htmlOut($thread->lastEntryUserName);?></strong>
+        </td>
+        <td>
+          at: <strong><?php $htmlOut($thread->lastEntryDateTime); ?></strong>
+        </td>
       </tr>
     <?php endforeach; ?>
   <?php endif; ?>
