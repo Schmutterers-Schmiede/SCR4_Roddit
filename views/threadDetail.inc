@@ -6,9 +6,9 @@
     <?php foreach ($data['selectedThread']->entries as $entry) : ?>
       <tr>
         <td>          
-          <?php $htmlOut($entry->userName);?>
+          posted by u/<?php $htmlOut($entry->userName);?>
           <time style="margin-left: 30px;"><?php $htmlOut($entry->dateTime->format('d.m.Y H:i:s'));?></time>
-          <p style="margin-top: 10px;"><?php $htmlOut($entry->text) ?></p>
+          <p style="margin-top: 10px;"><?php $htmlOut($entry->text);?></p>
         </td>        
       </tr>
     <?php endforeach; ?>
