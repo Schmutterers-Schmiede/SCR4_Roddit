@@ -9,7 +9,7 @@
       <input class="form-control" name="f" value="<?php $htmlOut($data['filter']); ?>">
     </div>
     <div class="col-auto">
-      <button class="btn btn-primaray">Search</button>
+      <button class="btn btn-primary">Search</button>
     </div>
   </div>
   <?php $endForm(); ?>

@@ -1,13 +1,16 @@
 <?php if ($data['threads'] !== null) : ?>
   <?php foreach ($data['threads'] as $thread) : ?>
     <tr>
-      <td><strong><?php $link($thread->title, 'Threads', 'Thread', ['tid' => $thread->id],  cssClass: 'nav-link'); ?></strong></td>
-      <td>
-        Last entry posted by: <strong><?php $htmlOut($thread->lastEntryUserName);?></strong>
-      </td>
-      <td>
-        at: <strong><?php $htmlOut($thread->lastEntryDateTime->format('d.m.Y H:i:s')); ?></strong>
-      </td>
+      <div>
+
+        <td><strong><?php $link($thread->title, 'Threads', 'Thread', ['tid' => $thread->id],  cssClass: 'nav-link'); ?></strong></td>
+        <td>
+          Last entry posted by ü\<?php $htmlOut($thread->lastEntryUserName);?>
+        </td>
+        <td>
+          <time style="margin-left: 30px;"><?php $htmlOut($thread->lastEntryDateTime->format('d.m.Y H:i:s')); ?></time>
+        </td>
+      </div>
     </tr>
   <?php endforeach; ?>
 <?php endif; ?>
