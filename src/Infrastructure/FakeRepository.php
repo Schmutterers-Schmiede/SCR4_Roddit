@@ -69,6 +69,21 @@ implements
     return $thread;
   }  
 
+  public function getThreadsForFilter(string $filter): array {
+    $res = [];
+    foreach ($this->mockThreads as $t) {
+      if($filter === '' || stripos($t[2], $filter) !== false) {
+        $entries = $this->getEntriesForId($t[0]);
+        $res[] = new \Application\Entities\Thread($t[0], $t[1], $t[2], new \DateTime($t[3]), $entries);
+      }
+    }
+    return $res;
+  }
+
+  //+------------------------------------------------------------+
+  //|                      PRIVATE HELPERS                       |
+  //+------------------------------------------------------------+
+
   private function getEntriesForId(int $id){
     foreach($this->mockEntries as $e){
       if($e[1] === $id){

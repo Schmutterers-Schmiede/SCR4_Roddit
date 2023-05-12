@@ -16,7 +16,7 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <nav class="navbar-nav me-auto">
                     <?php $link('Books', 'Books', 'Index', cssClass: 'nav-link'); ?>
-                    <?php $link('Search', 'Books', 'Search', cssClass: 'nav-link'); ?>
+                    <?php $link('Search', 'Threads', 'Search', cssClass: 'nav-link'); ?>
                     <?php $link('Checkout', 'Order', 'Create', cssClass: 'nav-link'); ?>
                 </nav>
                 <!-- navigation user -->
