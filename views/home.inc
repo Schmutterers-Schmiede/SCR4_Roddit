@@ -11,7 +11,7 @@
           Last entry posted by: <strong><?php $htmlOut($thread->lastEntryUserName);?></strong>
         </td>
         <td>
-          at: <strong><?php $htmlOut($thread->lastEntryDateTime); ?></strong>
+          at: <strong><?php $htmlOut($thread->lastEntryDateTime->format('d.m.Y H:i:s')); ?></strong>
         </td>
       </tr>
     <?php endforeach; ?>

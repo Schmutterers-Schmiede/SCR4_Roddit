@@ -21,11 +21,11 @@ implements
       );
       
       $this->mockThreads = array(
-        array(1, "scr4", "PHP is awesome!", "2023-12-4T12:12:12+02:00")
+        array(1, "scr4", "PHP is awesome!", "2023-12-4T12:12:12")
       );
 
       $this->mockEntries = array(
-        array(1, 1, "scr4", "2023-12-4T12:12:12+02:00", "Please help! I am being held against my will!")          
+        array(1, 1, "scr4", "2023-12-4T12:12:12", "Please help! I am being held against my will!")          
       );
   }
 
@@ -53,13 +53,8 @@ implements
   public function getAllThreads(): array {
     $threads = [];
     foreach($this->mockThreads as $t){
-      $entries = [];
-      foreach($this->mockEntries as $e){
-        if($e[1] === $t[0]){
-          $entries[] = new \Application\Entities\Entry($e[0], $e[1], $e[2], $e[3], $e[4]);
-        }
-      }      
-      $threads[] = new \Application\Entities\Thread($t[0], $t[1], $t[2], $t[3], $entries);
+      $entries = $this->getEntriesForId($t[0]);
+      $threads[] = new \Application\Entities\Thread($t[0], $t[1], $t[2], new \DateTime($t[3]), $entries);
     }
     return $threads;
   }
@@ -67,15 +62,19 @@ implements
   public function getThreadById(int $id): \Application\Entities\Thread {        
     foreach($this->mockThreads as $t){
       if($t[0] === $id){
-        $entries = [];
-        foreach($this->mockEntries as $e){
-          if($e[1] === $id){
-            $entries[] = new \Application\Entities\Entry($e[0], $e[1], $e[2], $e[3], $e[4]);
-          }
-        }      
-        $thread = new \Application\Entities\Thread($t[0], $t[1], $t[2], $t[3], $entries);
+        $entries = $this->getEntriesForId($t[0]);              
+        $thread = new \Application\Entities\Thread($t[0], $t[1], $t[2], new \DateTime($t[3]), $entries);
       }
     }
     return $thread;
   }  
+
+  private function getEntriesForId(int $id){
+    foreach($this->mockEntries as $e){
+      if($e[1] === $id){
+        $entries[] = new \Application\Entities\Entry($e[0], $e[1], $e[2], new \DateTime($e[3]), $e[4]);
+      }
+    }
+    return $entries;
+  }
 }
