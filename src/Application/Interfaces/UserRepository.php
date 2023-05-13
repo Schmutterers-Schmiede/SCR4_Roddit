@@ -4,4 +4,5 @@ namespace Application\Interfaces;
 interface UserRepository{
   public function getUser(int $id): ?\Application\Entities\User;
   public function getUserForUserName(string $userName): \Application\Entities\User | null;
+  public function CreateUser(string $username, string $passwordHash);
 }

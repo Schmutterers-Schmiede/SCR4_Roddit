@@ -11,6 +11,7 @@ implements
   private $mockUsers;
   private $mockThreads;
   private $mockEntries;
+  private $highestUserId;
 
   public function __construct()
   {
@@ -27,6 +28,8 @@ implements
       $this->mockEntries = array(
         array(1, 1, "scr4", "2023-12-4T12:12:12", "Please help! I am being held against my will!")          
       );
+
+      $this->highestUserId= 0;
   }
 
 
@@ -48,6 +51,10 @@ implements
       }
     }
     return null;
+  }
+
+  public function CreateUser(string $username, string $passwordHash){
+    $this->mockUsers[] = array($this->highestUserId + 1, $username, $passwordHash);    
   }
 
   public function getAllThreads(): array {
@@ -79,6 +86,7 @@ implements
     }
     return $res;
   }
+
 
   //+------------------------------------------------------------+
   //|                      PRIVATE HELPERS                       |
