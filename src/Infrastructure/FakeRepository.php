@@ -26,7 +26,7 @@ implements
       );
 
       $this->mockEntries = array(
-        array(1, 1, "scr4", "2023-12-4T12:12:12", "Please help! I am being held against my will!")          
+        array(1, 1, "scr4", "2023-12-4 12:12:12", "Please help! I am being held against my will!")          
       );
 
       $this->highestUserId= 0;

@@ -14,12 +14,12 @@ class ThreadSearchQuery
         $res = [];
         foreach ($this->threadRepository->getThreadsForFilter($filter) as $thread) {
           foreach($thread->getEntries() as $e) {
-            $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getDateTime(), $e->getText());
+            $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getTimeStamp(), $e->getText());
           }
             $res[] = new \Application\ThreadData( $thread->getUserName(), 
                                                   $thread->getId(),
                                                   $thread->getTitle(),
-                                                  $thread->getDateTime(),
+                                                  $thread->getTimeStamp(),
                                                   $resEntries);
         }
         return $res;

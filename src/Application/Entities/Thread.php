@@ -6,7 +6,7 @@ class Thread {
     private int $id,
     private string $userName,
     private string $title,
-    private \DateTime $dateTime,
+    private \DateTime $timeStamp,
     private array $entries
     ){}
 
@@ -19,8 +19,8 @@ class Thread {
     public function getTitle(): string {
       return $this->title;
     }
-    public function getDateTime(): \DateTime{
-      return $this->dateTime;
+    public function getTimeStamp(): \DateTime{
+      return $this->timeStamp;
     }
     public function getEntries(): array {
       return $this->entries;

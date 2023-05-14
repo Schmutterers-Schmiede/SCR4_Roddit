@@ -6,7 +6,7 @@ class Entry {
     private int $id,
     private int $ThreadId,
     private string $userName,    
-    private \DateTime $dateTime,
+    private \DateTime $timeStamp,
     private string $text
     ){}
 
@@ -17,8 +17,8 @@ class Entry {
       return $this->userName;
     }
     
-    public function getDateTime(): \DateTime {
-      return $this->dateTime;
+    public function getTimeStamp(): \DateTime {
+      return $this->timeStamp;
     }
 
     public function getText(): string {

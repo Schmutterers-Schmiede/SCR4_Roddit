@@ -12,9 +12,9 @@ final class ThreadsQuery {
     foreach ($this->threadRepository->getAllThreads() as $t) {
       $entries = $t->getEntries();      
       foreach($entries as $e){
-        $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getDateTime(), $e->getText());
+        $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getTimeStamp(), $e->getText());
       }
-      $res[] = new ThreadData($t->getUserName(), $t->getId(), $t->getTitle(), $t->getDateTime(), $resEntries);
+      $res[] = new ThreadData($t->getUserName(), $t->getId(), $t->getTitle(), $t->getTimeStamp(), $resEntries);
     }
     return $res; //array of ThraedData with EntryData arrays
   }

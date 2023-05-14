@@ -14,9 +14,9 @@ class ThreadByIdQuery
       $thread = $this->threadRepository->getThreadById($id);
       $entries = $thread->getEntries();      
       foreach($entries as $e){
-        $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getDateTime(), $e->getText());
+        $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getTimeStamp(), $e->getText());
       }
-      $res = new \Application\ThreadData($thread->getUserName() ,$thread->getId() ,$thread->getTitle() ,$thread->getDateTime() ,$resEntries);
+      $res = new \Application\ThreadData($thread->getUserName() ,$thread->getId() ,$thread->getTitle() ,$thread->getTimeStamp() ,$resEntries);
       return $res;
     }
 }
