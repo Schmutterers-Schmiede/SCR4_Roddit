@@ -10,69 +10,69 @@ USE `roeddit`;
 -- +=============================================+
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `userName` varchar(255) NOT NULL,
   `passwordHash` char(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `users` (`id`, `userName`, `passwordHash`) VALUES
+INSERT INTO `users` (`userId`, `userName`, `passwordHash`) VALUES
 (1, 'scr4', '$2y$10$0dhe3ngxlmzgZrX6MpSHkeoDQ.dOaceVTomUq/nQXV0vSkFojq.VG');
 
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`userId`),
   ADD UNIQUE KEY `userName` (`userName`);
 	
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 	
 -- +=============================================+
 -- |                   THREADS                   |
 -- +=============================================+
 
 CREATE TABLE `threads` (
-  `id` int(11) NOT NULL,
+  `threadId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `title` char(60) NOT NULL,
   `timestamp` DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `threads` (`id`, `userId`, `title`, `timestamp`) VALUES
+INSERT INTO `threads` (`threadId`, `userId`, `title`, `timestamp`) VALUES
 (1, 1, 'PHP is awesome!', '2023-12-4T12:12:12');
 
 ALTER TABLE `threads`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`threadId`),
   ADD UNIQUE KEY `title` (`title`),
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `threadId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
   
 ALTER TABLE `threads`
-  ADD CONSTRAINT fk_userId
+  ADD CONSTRAINT fk_threads_userId
   FOREIGN KEY (userId)
-  REFERENCES users(id);
+  REFERENCES users(userId);
 
 -- +=============================================+
 -- |                   ENTRIES                   |
 -- +=============================================+
 
 CREATE TABLE `entries` (
-  `id` int(11) NOT NULL,
+  `entryId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `threadId` int(11) NOT NULL,
   `timestamp` DATETIME NOT NULL,
   `text` VARCHAR(2000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `entries` (`id`, `userId`, `threadId`, `timestamp`, `text`) VALUES
+INSERT INTO `entries` (`entryId`, `userId`, `threadId`, `timestamp`, `text`) VALUES
 (1, 1, 1, '2023-12-4T12:12:12', 'Please help! I am being held against my will!');
 
 ALTER TABLE `entries`
-  ADD PRIMARY KEY (`id`),  
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  ADD PRIMARY KEY (`entryId`),  
+  MODIFY `entryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
   
 ALTER TABLE `entries`
-  ADD CONSTRAINT fk_userId
+  ADD CONSTRAINT fk_entries_userId
   FOREIGN KEY (userId)
-  REFERENCES users(id),
+  REFERENCES users(userId),
 
   ADD CONSTRAINT fk_threadId
   FOREIGN KEY (threadId)
-  REFERENCES threads(id);
+  REFERENCES threads(threadId);

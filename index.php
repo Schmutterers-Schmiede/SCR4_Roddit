@@ -20,10 +20,10 @@ $sp->register(\Application\ThreadSearchQuery::class);
 // === Services
 $sp->register(\Application\Services\AuthenticationService::class);
 // === Infrastructure
-$sp->register(\Infrastructure\Repository::class, function (){return new \Infrastructure\Repository('localhost','root', '', 'bookshop');});
+$sp->register(\Infrastructure\Repository::class, function (){return new \Infrastructure\Repository('localhost','root', '', 'roeddit');});
 $sp->register(\Infrastructure\Session::class, isSingleton: true);
 $sp->register(\Infrastructure\FakeRepository::class, isSingleton: true);
-$sp->register(\Application\Interfaces\ThreadRepository::class, \Infrastructure\FakeRepository::class);
+$sp->register(\Application\Interfaces\ThreadRepository::class, \Infrastructure\Repository::class);
 $sp->register(\Application\Interfaces\UserRepository::class, \Infrastructure\Repository::class);
 $sp->register(\Application\Interfaces\Session::class, \Infrastructure\Session::class);
 // === Presentation
