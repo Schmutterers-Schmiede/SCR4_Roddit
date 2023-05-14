@@ -48,3 +48,31 @@ ALTER TABLE `threads`
   ADD CONSTRAINT fk_userId
   FOREIGN KEY (userId)
   REFERENCES users(id);
+
+-- +=============================================+
+-- |                   ENTRIES                   |
+-- +=============================================+
+
+CREATE TABLE `entries` (
+  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `threadId` int(11) NOT NULL,
+  `timestamp` DATETIME NOT NULL,
+  `text` VARCHAR(2000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `entries` (`id`, `userId`, `threadId`, `timestamp`, `text`) VALUES
+(1, 1, 1, '2023-12-4T12:12:12', 'Please help! I am being held against my will!');
+
+ALTER TABLE `entries`
+  ADD PRIMARY KEY (`id`),  
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  
+ALTER TABLE `entries`
+  ADD CONSTRAINT fk_userId
+  FOREIGN KEY (userId)
+  REFERENCES users(id),
+
+  ADD CONSTRAINT fk_threadId
+  FOREIGN KEY (threadId)
+  REFERENCES threads(id);

@@ -41,8 +41,7 @@ class Threads extends \Presentation\MVC\Controller {
     }
     //registration unsuccessful -> reload Create Thread page with error
     return $this->view('threadPost', [
-      'user' => $this->signedInUserQuery->execute(),
-      
+      'user' => $this->signedInUserQuery->execute(),      
       'errors' => ['This thread already exists']
     ]);
   }
