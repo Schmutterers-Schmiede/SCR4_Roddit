@@ -12,6 +12,7 @@ implements
   private $mockThreads;
   private $mockEntries;
   private $highestUserId;
+  private $highestThreadId;
 
   public function __construct()
   {
@@ -29,7 +30,9 @@ implements
         array(1, 1, "scr4", "2023-12-4 12:12:12", "Please help! I am being held against my will!")          
       );
 
-      $this->highestUserId= 0;
+      $this->highestUserId = 1;
+
+      $this->highestThreadId = 1;
   }
 
 
@@ -87,6 +90,12 @@ implements
     return $res;
   }
 
+  public function createThread(int $userId, string $title){
+    $date = date('Y-m-dTH:i:s');
+    $userName = $this->getUserNameForId($userId);
+    $this->mockThreads[] = array($this->highestThreadId + 1, $userName, $title, $date);
+  }
+
 
   //+------------------------------------------------------------+
   //|                      PRIVATE HELPERS                       |
@@ -99,5 +108,13 @@ implements
       }
     }
     return $entries;
+  }
+
+  private function getUserNameForId(int $id){
+    foreach($this->mockUsers as $u){
+      if ($u[0] == $id){
+        return $u[1];
+      }
+    }
   }
 }

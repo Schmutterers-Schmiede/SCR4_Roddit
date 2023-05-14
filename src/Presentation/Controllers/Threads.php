@@ -6,7 +6,8 @@ class Threads extends \Presentation\MVC\Controller {
   public function __construct(
     private \Application\ThreadByIdQuery $threadByIdQuery,
     private \Application\SignedInUserQuery $signedInUserQuery,
-    private \Application\ThreadSearchQuery $threadSearchQuery
+    private \Application\ThreadSearchQuery $threadSearchQuery,
+    private \Application\CreateThreadCommand $createThreadCommand
   ){}
 
   //go to detailed thread page that shows the entries
@@ -23,6 +24,26 @@ class Threads extends \Presentation\MVC\Controller {
       'filter' => $this->tryGetParam('f', $value) ? $value : '',
       'threads' => $this->tryGetParam('f', $value) ? $this->threadSearchQuery->execute($value) : null,
       'context' => $this->getRequestUri()
+    ]);
+  }
+
+  public function GET_PostThread(): \Presentation\MVC\ViewResult {
+    return new \Presentation\MVC\ViewResult('threadPost', [
+      'user' => $this->signedInUserQuery->execute()
+    ]);
+  }
+
+  public function POST_Create(): \Presentation\MVC\ActionResult {
+    $userId = $this->signedInUserQuery->execute()->id;
+    if($this->createThreadCommand->execute($userId, $this->getParam('title'))){
+      //Creation successful -> go to home
+      return $this->redirect('Home', 'Index');
+    }
+    //registration unsuccessful -> reload Create Thread page with error
+    return $this->view('threadPost', [
+      'user' => $this->signedInUserQuery->execute(),
+      
+      'errors' => ['This thread already exists']
     ]);
   }
 }
