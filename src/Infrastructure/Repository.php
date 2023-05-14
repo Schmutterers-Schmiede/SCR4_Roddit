@@ -120,11 +120,20 @@ implements
 
     public function getAllThreads(): array{
       $threads = [];
-
+      $entries = [];
       //I know the line below is unnecessary, but my IDE wouldn't shut up about unassigned variables
       $text = ''; $entryId = 0; $entryTid = 0; $entryUserName = ''; $entryTimestamp = '';
 
       $con = $this->getConnection();
+      //get all entries
+      $entryRes = $this->executeQuery($con, 'SELECT entryId, threadId, userName, timestamp, text
+                                                    FROM entries
+                                                    JOIN users ON entries.userId = users.userId                                                    
+                                                    ORDER BY timestamp DESC;'
+      );               
+      while($e = $entryRes->fetch_object()) {
+        $entries[] = new \Application\Entities\Entry($e->entryId, $e->threadId, $e->userName, new \DateTime($e->timestamp), $e->text);
+      }                               
       //get all threads
       $threadRes = $this->executeQuery($con, 'SELECT threadId, userName, title, timestamp
                                               FROM threads
@@ -134,24 +143,18 @@ implements
       );                  
       
       while($t = $threadRes->fetch_object()){
-        $tid = $t->threadId;
-        //get all entries for each thread
-        $entryStat = $this->executeStatement($con, 'SELECT entryId, threadId, userName, timestamp, text
-                                                    FROM entries
-                                                    JOIN users
-                                                    ON entries.userId = users.userId
-                                                    WHERE threadId = ?
-                                                    ORDER BY timestamp DESC;',
-        function($s) use ($tid){$s->bind_param('i', $tid);});
-        $entryStat->bind_result($entryId, $entryTid, $entryUserName, $entryTimestamp, $text);
         $entriesForCurrentThread = [];
-        while($entryStat->fetch()){
-          $entriesForCurrentThread[] = new \Application\Entities\Entry ($entryId, $entryTid, $entryUserName, new \DateTime($entryTimestamp), $text);
+        //get all entries for each thread
+        foreach($entries as $e){
+          if ((int)$e->getThreadId() === (int)$t->threadId){
+            $entriesForCurrentThread[] = $e;
+          }
         }
+               
         $threads[] = new \Application\Entities\Thread($t->threadId, $t->userName, $t->title, new \DateTime($t->timestamp), $entriesForCurrentThread);
+        unset($entriesForCurrentThread);
       }
-      $con->close();
-      $entryStat->close();
+      $con->close();      
       return $threads;
     }
 
@@ -181,11 +184,11 @@ implements
                                             ORDER BY timestamp DESC;',
       function($s) use ($id){$s->bind_param('i', $id);});      
       $threadStat->bind_result($threadId, $username, $title, $timestamp);
-
+      $result = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), $entriesForThread);
       $con->close();
       $threadStat->close();
       $entryStat->close();
-      return new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), $entriesForThread);
+      return $result;
     }
 
     public function getThreadsForFilter(string $filter): array {
@@ -235,18 +238,35 @@ implements
     public function createThread(int $userId, string $title){
       $date = date('Y-m-dTH:i:s');
       $con = $this->getConnection();
-        $con->autocommit(false);
-        $stat = $this->executeStatement(
-          $con,
-          'INSERT INTO threads (`userId`, `title`, `timestamp`) VALUES (?, ?)',
-          function($s) use ($userId, $title, $date){
-            $s->bind_param('iss', $userId, $title, $date);
-          }
-        );
-        $stat->close();
-        $con->commit();
-        $con->close();
+      $con->autocommit(false);
+      $stat = $this->executeStatement(
+        $con,
+        'INSERT INTO threads (`userId`, `title`, `timestamp`) VALUES (?, ?, ?)',
+        function($s) use ($userId, $title, $date){
+          $s->bind_param('iss', $userId, $title, $date);
+        }
+      );
+      $stat->close();
+      $con->commit();
+      $con->close();
     }
+
+  public function createEntry(int $userId, int $threadId, string $text){    
+      $timestamp = date('Y-m-dTH:i:s');
+      $con = $this->getConnection();
+      $con->autocommit(false);
+      $stat = $this->executeStatement(
+        $con,
+        'INSERT INTO entries (`userId`,`threadId`,`timestamp`,`text`) VALUES (?,?,?,?)',
+        function($s) use ($userId, $threadId, $timestamp, $text){
+          $s->bind_param('iiss', $userId, $threadId, $timestamp, $text);
+        }
+      );
+      $stat->close();
+      $con->commit();
+      $con->close();
+  }
+
 }
 
 

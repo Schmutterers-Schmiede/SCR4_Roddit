@@ -3,7 +3,7 @@
     <tr>
       <div>
 
-        <td><strong><?php $link($thread->title, 'Threads', 'Thread', ['tid' => $thread->id],  cssClass: 'nav-link'); ?></strong></td>
+        <td><strong><?php $link($thread->title, 'Threads', 'Thread', ['tid' => $thread->id, 'title' => $thread->title],  cssClass: 'nav-link'); ?></strong></td>
         <td>
           Last entry posted by ü\<?php $htmlOut($thread->lastEntryUserName);?>
         </td>

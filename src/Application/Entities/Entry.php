@@ -4,7 +4,7 @@ namespace Application\Entities;
 class Entry {
   public function __construct(
     private int $id,
-    private int $ThreadId,
+    private int $threadId,
     private string $userName,    
     private \DateTime $timeStamp,
     private string $text
@@ -24,5 +24,9 @@ class Entry {
     public function getText(): string {
       return $this->text;
     }    
+
+    public function getThreadId(): int {
+      return $this->threadId;
+    }
 
 }
