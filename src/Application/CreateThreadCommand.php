@@ -13,6 +13,6 @@
         $this->threadRepository->createThread($userId, $title);
         return true;
       }
-      return false; //user already exists
+      return false; //thread already exists
     }
   }
