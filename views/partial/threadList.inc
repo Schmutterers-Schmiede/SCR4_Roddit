@@ -8,7 +8,7 @@
           Last entry posted by ü\<?php $htmlOut($thread->lastEntryUserName);?>
         </td>
         <td>
-          <time style="margin-left: 30px;"><?php $htmlOut($thread->lastEntryDateTime->format('d.m.Y H:i:s')); ?></time>
+          <time style="margin-left: 30px;"><?php $htmlOut($thread->lastEntryTimestamp->format('d.m.Y H:i:s')); ?></time>
         </td>
       </div>
     </tr>

@@ -6,15 +6,15 @@ readonly final class ThreadData {
     public string $userName,
     public string $id,
     public string $title,
-    public \DateTime $dateTime,
+    public \DateTime $timestamp,
     public array $entries
     ){
       $this->lastEntryUserName = $entries[0]->userName;
-      $this->lastEntryDateTime = $entries[0]->dateTime;
+      $this->lastEntryTimestamp = $entries[0]->timestamp;
     }
 
     public string $lastEntryUserName;
-    public \DateTime $lastEntryDateTime;
+    public \DateTime $lastEntryTimestamp;
     
 
 }

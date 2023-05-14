@@ -19,7 +19,7 @@ class Thread {
     public function getTitle(): string {
       return $this->title;
     }
-    public function getTimeStamp(): \DateTime{
+    public function getTimestamp(): \DateTime{
       return $this->timeStamp;
     }
     public function getEntries(): array {

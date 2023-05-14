@@ -7,7 +7,7 @@
       <tr>
         <td>          
           posted by ü/<?php $htmlOut($entry->userName);?>
-          <time style="margin-left: 30px;"><?php $htmlOut($entry->dateTime->format('d.m.Y H:i:s'));?></time>
+          <time style="margin-left: 30px;"><?php $htmlOut($entry->timestamp->format('d.m.Y H:i:s'));?></time>
           <p style="margin-top: 10px;"><?php $htmlOut($entry->text);?></p>
         </td>        
       </tr>

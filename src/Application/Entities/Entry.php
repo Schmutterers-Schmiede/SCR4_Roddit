@@ -17,7 +17,7 @@ class Entry {
       return $this->userName;
     }
     
-    public function getTimeStamp(): \DateTime {
+    public function getTimestamp(): \DateTime {
       return $this->timeStamp;
     }
 
