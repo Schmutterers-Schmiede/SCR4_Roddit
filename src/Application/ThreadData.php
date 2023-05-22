@@ -9,12 +9,16 @@ readonly final class ThreadData {
     public \DateTime $timestamp,
     public array $entries
     ){
-      $this->lastEntryUserName = $entries[0]->userName;
-      $this->lastEntryTimestamp = $entries[0]->timestamp;
+      if(count($entries) !== 0){
+        $this->lastEntryUserName = $entries[0]->userName;
+        $this->lastEntryTimestamp = $entries[0]->timestamp;
+      }
+      $this->entryCount = count($entries);
     }
 
     public string $lastEntryUserName;
     public \DateTime $lastEntryTimestamp;
+    public int $entryCount;
     
 
 }
