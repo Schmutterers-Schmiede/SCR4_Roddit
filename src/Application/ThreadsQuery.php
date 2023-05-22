@@ -14,7 +14,12 @@ final class ThreadsQuery {
       foreach($entries as $e){
         $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getTimeStamp(), $e->getText());
       }
-      $res[] = new ThreadData($t->getUserName(), $t->getId(), $t->getTitle(), $t->getTimeStamp(), $resEntries);
+      if(count($resEntries) === 0)
+        $res[] = new ThreadData($t->getUserName(), $t->getId(), $t->getTitle(), $t->getTimeStamp(), []);
+      else
+        $res[] = new ThreadData($t->getUserName(), $t->getId(), $t->getTitle(), $t->getTimeStamp(), $resEntries);
+
+      $resEntries = [];
     }
     return $res; //array of ThraedData with EntryData arrays
   }

@@ -11,6 +11,7 @@ class ThreadByIdQuery
 
     public function execute(int $id): \Application\ThreadData
     {
+      $resEntries = [];
       $thread = $this->threadRepository->getThreadById($id);
       $entries = $thread->getEntries();      
       foreach($entries as $e){

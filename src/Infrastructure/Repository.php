@@ -20,7 +20,9 @@ implements
         $this->database = $database;
     }
 
-    // === private helper methods ===
+    // +----------------------------------------------------------------+
+    // |                     DATABASE COMMUNICATION                     |
+    // +----------------------------------------------------------------+
 
     private function getConnection()
     {
@@ -53,7 +55,9 @@ implements
         return $statement;
     }
 
-    // === public methods ===
+    // +----------------------------------------------------------------+
+    // |                             USERS                              |
+    // +----------------------------------------------------------------+
 
     public function getUser(int $id): ?\Application\Entities\User
     {
@@ -118,6 +122,10 @@ implements
         $con->close();
     }
 
+    // +----------------------------------------------------------------+
+    // |                            THREADS                             |
+    // +----------------------------------------------------------------+
+
     public function getAllThreads(): array{
       $threads = [];
       $entries = [];
@@ -150,8 +158,10 @@ implements
             $entriesForCurrentThread[] = $e;
           }
         }
-               
-        $threads[] = new \Application\Entities\Thread($t->threadId, $t->userName, $t->title, new \DateTime($t->timestamp), $entriesForCurrentThread);
+        if(count($entriesForCurrentThread) === 0)
+          $threads[] = new \Application\Entities\Thread($t->threadId, $t->userName, $t->title, new \DateTime($t->timestamp), []);
+        else
+          $threads[] = new \Application\Entities\Thread($t->threadId, $t->userName, $t->title, new \DateTime($t->timestamp), $entriesForCurrentThread);
         unset($entriesForCurrentThread);
       }
       $con->close();      
@@ -184,7 +194,12 @@ implements
                                             ORDER BY timestamp DESC;',
       function($s) use ($id){$s->bind_param('i', $id);});      
       $threadStat->bind_result($threadId, $username, $title, $timestamp);
-      $result = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), $entriesForThread);
+      
+      if(count($entriesForThread) === 0)
+        $result = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), []);
+      else
+        $result = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), $entriesForThread);
+
       $con->close();
       $threadStat->close();
       $entryStat->close();
@@ -229,7 +244,10 @@ implements
             $entriesForCurrentThread[] = new \Application\Entities\Entry($e->getId(), $threadId, $e->getUserName(), $e->getTimestamp(), $e->getText());
           }
         }
-        $threads[] = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), $entriesForCurrentThread);
+        if(count($entriesForCurrentThread) === 0)
+          $threads[] = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), []);
+        else
+          $threads[] = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), $entriesForCurrentThread);
       }
       $con->close();
       $threadStat->close();
@@ -250,6 +268,10 @@ implements
       $con->commit();
       $con->close();
     }
+
+    // +----------------------------------------------------------------+
+    // |                             ENTRIES                            |
+    // +----------------------------------------------------------------+
 
   public function createEntry(int $userId, int $threadId, string $text){    
       $timestamp = date('Y-m-dTH:i:s');
