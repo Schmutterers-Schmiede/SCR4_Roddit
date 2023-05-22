@@ -4,7 +4,7 @@
 <h1>Welcome to röddit!</h1>
   <?php if($data['user'] !== null): ?>
     <?php $beginForm('Threads', 'PostThread', method: 'get', cssClass: 'form-inline'); ?>    
-      <button style="align-self: end" class="btn btn-secondary">Create Thread</butto>
+      <button style="align-self: end" class="btn btn-primary">Create Thread</butto>
     <?php $endForm(); ?>
   <?php endif; ?>
 </div>
