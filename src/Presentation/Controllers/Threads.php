@@ -13,9 +13,10 @@ class Threads extends \Presentation\MVC\Controller {
 
   //go to detailed thread page that shows the entries
   public function GET_Thread() : \Presentation\MVC\ViewResult {
+    $thread = $this->threadByIdQuery->execute($this->getParam('tid'));
     return new \Presentation\MVC\ViewResult('threadDetail', [
       'user' => $this->signedInUserQuery->execute(),
-      'selectedThread' => $this->threadByIdQuery->execute($this->getParam('tid'))
+      'thread' => $thread
     ]);
   }
 
