@@ -42,6 +42,11 @@ class User extends \Presentation\MVC\Controller {
     ]);
   }
 
+  public function GET_RegisterSuccess(): \Presentation\MVC\ViewResult {
+    return $this->view('registerSuccess');
+  }
+
+
   public function POST_Create() : \Presentation\MVC\ActionResult {
     //password missmatch -> reload with errors
     if($this->getParam('pwd1') !== $this->getParam('pwd2')){
@@ -54,7 +59,9 @@ class User extends \Presentation\MVC\Controller {
     if($this->signUpCommand->execute($this->getParam('un'), $this->getParam('pwd1'))){
     
       //registration successful -> go to login
-      return $this->redirect('User', 'Login');
+      return $this->view('registerSuccess', [
+        'user' => $this->signedInUserQuery->execute()        
+      ]);
     }
     //registration unsuccessful -> reload registration page with error
     return $this->view('register', [
