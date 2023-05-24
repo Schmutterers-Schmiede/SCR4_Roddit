@@ -10,7 +10,11 @@
 </div>
 <div class="mb-3">
     <label for="password" class="form-label">Password</label>
-    <input type="password" class="form-control" id="password" name="pwd">
+    <input type="password" class="form-control" id="password1" name="pwd1">
+</div>
+<div class="mb-3">
+  <label for="password" class="form-label">Confirm password</label>
+  <input type="password" class="form-control" id="password2" name="pwd2">
 </div>
 <button class="btn btn-primary">Create</button>
 <?php $endForm(); ?>

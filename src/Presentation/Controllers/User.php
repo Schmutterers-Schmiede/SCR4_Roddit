@@ -43,8 +43,15 @@ class User extends \Presentation\MVC\Controller {
   }
 
   public function POST_Create() : \Presentation\MVC\ActionResult {
-    
-    if($this->signUpCommand->execute($this->getParam('un'), $this->getParam('pwd'))){
+    //password missmatch -> reload with errors
+    if($this->getParam('pwd1') !== $this->getParam('pwd2')){
+      return $this->view('register', [
+        'user' => $this->signedInUserQuery->execute(),
+        'userName' => $this->getParam('un'),
+        'errors' => ["Password mismatch"]
+      ]);
+    }
+    if($this->signUpCommand->execute($this->getParam('un'), $this->getParam('pwd1'))){
     
       //registration successful -> go to login
       return $this->redirect('User', 'Login');
