@@ -18,6 +18,7 @@ $sp->register(\Application\SignUpCommand::class);
 $sp->register(\Application\ThreadsQuery::class);
 $sp->register(\Application\ThreadByIdQuery::class);
 $sp->register(\Application\ThreadSearchQuery::class);
+$sp->register(\Application\LatestEntryQuery::class);
 // === Services
 $sp->register(\Application\Services\AuthenticationService::class);
 // === Infrastructure

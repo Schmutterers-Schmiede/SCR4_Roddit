@@ -8,4 +8,5 @@ interface ThreadRepository {
   public function getThreadsForFilter(string $filter): array; //of thread entities
   public function createThread(int $userId, string $title);
   public function createEntry(int $threadId, int $userId, string $text);
+  public function getLatestEntry();
 }

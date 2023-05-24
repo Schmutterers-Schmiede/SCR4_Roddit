@@ -8,14 +8,16 @@ class Threads extends \Presentation\MVC\Controller {
     private \Application\SignedInUserQuery $signedInUserQuery,
     private \Application\ThreadSearchQuery $threadSearchQuery,
     private \Application\CreateThreadCommand $createThreadCommand,
-    private \Application\CreateEntryCommand $createEntryCommand
+    private \Application\CreateEntryCommand $createEntryCommand,
+    private \Application\LatestEntryQuery $latestEntryQuery
   ){}
 
   //go to detailed thread page that shows the entries
   public function GET_Thread() : \Presentation\MVC\ViewResult {
     return new \Presentation\MVC\ViewResult('threadDetail', [
       'user' => $this->signedInUserQuery->execute(),
-      'selectedThread' => $this->threadByIdQuery->execute($this->getParam('tid'))
+      'selectedThread' => $this->threadByIdQuery->execute($this->getParam('tid')),
+      'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
 
@@ -24,13 +26,15 @@ class Threads extends \Presentation\MVC\Controller {
       'user' => $this->signedInUserQuery->execute(),
       'filter' => $this->tryGetParam('f', $value) ? $value : '',
       'threads' => $this->tryGetParam('f', $value) ? $this->threadSearchQuery->execute($value) : null,
-      'context' => $this->getRequestUri()
+      'context' => $this->getRequestUri(),
+      'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
 
   public function GET_PostThread(): \Presentation\MVC\ViewResult {
     return new \Presentation\MVC\ViewResult('threadPost', [
-      'user' => $this->signedInUserQuery->execute()
+      'user' => $this->signedInUserQuery->execute(),
+      'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
 
@@ -43,7 +47,8 @@ class Threads extends \Presentation\MVC\Controller {
     //Creation unsuccessful -> reload Create Thread page with error
     return $this->view('threadPost', [
       'user' => $this->signedInUserQuery->execute(),      
-      'errors' => ['This thread already exists']
+      'errors' => ['This thread already exists'],
+      'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
 

@@ -289,6 +289,23 @@ implements
       $con->close();
   }
 
+  public function getLatestEntry(){
+    
+    $con = $this->getConnection();      
+
+    $entryInfoRes = $this->executeQuery($con, 'SELECT title, userName, entries.timestamp
+                                                FROM entries
+                                                JOIN users ON entries.userId = users.userId
+                                                JOIN threads ON entries.threadId = threads.threadId
+                                                ORDER BY entries.timestamp DESC
+                                                LIMIT 1;',
+    );
+    $e = $entryInfoRes->fetch_object();
+    $latestEntry = new \Application\Entities\EntryInfo($e->title, $e->userName, new \DateTime($e->timestamp));
+    $con->close();      
+    return $latestEntry;      
+  }
+
 }
 
 

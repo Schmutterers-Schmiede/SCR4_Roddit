@@ -7,13 +7,15 @@ class User extends \Presentation\MVC\Controller {
     private \Application\SignInCommand $signInCommand,
     private \Application\SignOutCommand $signOutCommand,
     private \Application\SignedInUserQuery $signedInUserQuery,
-    private \Application\SignUpCommand $signUpCommand
+    private \Application\SignUpCommand $signUpCommand,
+    private \Application\LatestEntryQuery $latestEntryQuery
   ){}
 
   public function GET_Login() : \Presentation\MVC\ViewResult {
     return $this->view('login', [
       'user' => $this->signedInUserQuery->execute(),
-      'userName' => ''
+      'userName' => '',
+      'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
 
@@ -23,7 +25,8 @@ class User extends \Presentation\MVC\Controller {
       return $this->view('login', [
         'user' => $this->signedInUserQuery->execute(),
         'userName' => $this->getParam('un'),
-        'errors' => ['Invalid user name or password']
+        'errors' => ['Invalid user name or password'],
+        'latestEntry' => $this->latestEntryQuery->execute()
       ]);
     }
     //login successful --> redirect
@@ -38,12 +41,15 @@ class User extends \Presentation\MVC\Controller {
   public function GET_Register(): \Presentation\MVC\ViewResult {
     return $this->view('register', [
       'user' => $this->signedInUserQuery->execute(),
-      'userName' => ''
+      'userName' => '',
+      'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
 
   public function GET_RegisterSuccess(): \Presentation\MVC\ViewResult {
-    return $this->view('registerSuccess');
+    return $this->view('registerSuccess',[
+      'latestEntry' => $this->latestEntryQuery->execute()
+    ]);
   }
 
 
@@ -53,21 +59,24 @@ class User extends \Presentation\MVC\Controller {
       return $this->view('register', [
         'user' => $this->signedInUserQuery->execute(),
         'userName' => $this->getParam('un'),
-        'errors' => ["Password mismatch"]
+        'errors' => ["Password mismatch"],
+        'latestEntry' => $this->latestEntryQuery->execute()
       ]);
     }
     if($this->signUpCommand->execute($this->getParam('un'), $this->getParam('pwd1'))){
     
       //registration successful -> go to login
       return $this->view('registerSuccess', [
-        'user' => $this->signedInUserQuery->execute()        
+        'user' => $this->signedInUserQuery->execute(),
+        'latestEntry' => $this->latestEntryQuery->execute()
       ]);
     }
     //registration unsuccessful -> reload registration page with error
     return $this->view('register', [
       'user' => $this->signedInUserQuery->execute(),
       'userName' => $this->getParam('un'),
-      'errors' => ['This username already exists']
+      'errors' => ['This username already exists'],
+      'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
 }
