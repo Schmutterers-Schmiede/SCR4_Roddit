@@ -137,7 +137,7 @@ implements
       $entryRes = $this->executeQuery($con, 'SELECT entryId, threadId, userName, timestamp, text
                                                     FROM entries
                                                     JOIN users ON entries.userId = users.userId                                                    
-                                                    ORDER BY timestamp DESC;'
+                                                    ORDER BY timestamp ASC;'
       );               
       while($e = $entryRes->fetch_object()) {
         $entries[] = new \Application\Entities\Entry($e->entryId, $e->threadId, $e->userName, new \DateTime($e->timestamp), $e->text);
@@ -147,7 +147,7 @@ implements
                                               FROM threads
                                               JOIN users 
                                               ON threads.userId = users.userId
-                                              ORDER BY timestamp DESC;'
+                                              ORDER BY timestamp ASC;'
       );                  
       
       while($t = $threadRes->fetch_object()){
@@ -178,7 +178,7 @@ implements
                                                     JOIN users
                                                     ON entries.userId = users.userId
                                                     WHERE threadId = ?
-                                                    ORDER BY timestamp DESC;',
+                                                    ORDER BY timestamp ASC;',
         function($s) use ($id){$s->bind_param('i', $id);});
       $entryStat->bind_result($entryId, $entryTid, $entryUserName, $entryTimestamp, $text);  
       $entriesForThread = [];
@@ -191,7 +191,7 @@ implements
                                             JOIN users
                                             ON threads.userId = users.userId
                                             WHERE threadId = ?
-                                            ORDER BY timestamp DESC;',
+                                            ORDER BY timestamp ASC;',
       function($s) use ($id){$s->bind_param('i', $id);});      
       $threadStat->bind_result($threadId, $username, $title, $timestamp);
       
@@ -219,7 +219,7 @@ implements
                                                     JOIN users ON entries.userId = users.userId
                                                     JOIN threads ON entries.threadId = threads.threadId
                                                     WHERE title LIKE ?
-                                                    ORDER BY timestamp DESC;',
+                                                    ORDER BY timestamp ASC;',
         function($s) use ($filter){$s->bind_param('s', $filter);});
       $entryStat->bind_result($entryId, $entryTid, $entryUserName, $entryTimestamp, $text);      
       while($entryStat->fetch()){
@@ -232,7 +232,7 @@ implements
                                               JOIN users 
                                               ON threads.userId = users.userId
                                               WHERE title LIKE ?
-                                              ORDER BY timestamp DESC;',
+                                              ORDER BY timestamp ASC;',
       function($s) use ($filter){$s->bind_param('s', $filter);});                  
       $threadStat->bind_result($threadId, $username, $title, $timestamp);
       while($threadStat->fetch()){
@@ -297,7 +297,7 @@ implements
                                                 FROM entries
                                                 JOIN users ON entries.userId = users.userId
                                                 JOIN threads ON entries.threadId = threads.threadId
-                                                ORDER BY entries.timestamp DESC
+                                                ORDER BY entries.timestamp ASC
                                                 LIMIT 1;',
     );
     $e = $entryInfoRes->fetch_object();

@@ -1,6 +1,7 @@
 <?php
 
 namespace Presentation\Controllers;
+use Presentation\MVC\ViewResult;
 
 class Threads extends \Presentation\MVC\Controller {
   public function __construct(
@@ -14,9 +15,12 @@ class Threads extends \Presentation\MVC\Controller {
 
   //go to detailed thread page that shows the entries
   public function GET_Thread() : \Presentation\MVC\ViewResult {
+    $selectedThread = $this->threadByIdQuery->execute($this->getParam('tid'));
     return new \Presentation\MVC\ViewResult('threadDetail', [
       'user' => $this->signedInUserQuery->execute(),
-      'selectedThread' => $this->threadByIdQuery->execute($this->getParam('tid')),
+      'title' => $selectedThread->title,
+      'entries' => $selectedThread->entries,
+      'threadId' => $this->getParam('tid'),
       'latestEntry' => $this->latestEntryQuery->execute()
     ]);
   }
@@ -38,7 +42,7 @@ class Threads extends \Presentation\MVC\Controller {
     ]);
   }
 
-  public function POST_Create(): \Presentation\MVC\ActionResult {
+  public function POST_CreateThread(): \Presentation\MVC\ActionResult {
     $userId = $this->signedInUserQuery->execute()->id;
     if($this->createThreadCommand->execute($userId, $this->getParam('title'))){
       //Creation successful -> go to home
@@ -52,15 +56,47 @@ class Threads extends \Presentation\MVC\Controller {
     ]);
   }
 
-  // public function GET_CreateEntry(): \Presentation\MVC\ViewResult {
-  //   return new \Presentation\MVC\ViewResult('threadPost', [
-  //     'user' => $this->signedInUserQuery->execute(),
-  //     'threadId' => 
-  //   ]);
-  // }
-  // public function POST_PostEntry(): \Presentation\MVC\ViewResult {
-  //   $userId = $this->signedInUserQuery->execute()->id;
-  //   $this->createEntryCommand->execute($userId)
-    
-  // }
+  public function GET_PostEntry(): \Presentation\MVC\ViewResult {
+    return new \Presentation\MVC\ViewResult('entryPost', [
+      'user' => $this->signedInUserQuery->execute(),
+      'threadId' => $this->getParam('threadId'),
+      'latestEntry' => $this->latestEntryQuery->execute()
+    ]);
+  }
+
+  public function POST_CreateEntry(): \Presentation\MVC\ViewResult {
+    $threadId = $this->getParam('threadId');
+    $text = $this->getParam('text');
+    $userId = $this->signedInUserQuery->execute()->id;
+    if(strlen($this->getParam('text')) === 0){
+      //ERROR: no text entered
+      return $this->view('threadPost', [
+        'user' => $this->signedInUserQuery->execute(),
+        'threadId' => $threadId,
+        'latestEntry' => $this->latestEntryQuery->execute(),
+        'errors' => 'No text entered'
+      ]);
+    }
+    else{
+      if($this->createEntryCommand->execute($userId, $threadId, $text)){
+        //creation successful         
+        $thread = $this->threadByIdQuery->execute($threadId);
+        return new ViewResult('threadDetail', [          
+          'user' => $this->signedInUserQuery->execute(),          
+          'title' => $thread->title,
+          'entries' => $thread->entries,
+          'latestEntry' => $this->latestEntryQuery->execute(),          
+        ]);
+      }
+      else{
+        //hacker attack
+        return new ViewResult('threadPost', [
+          'user' => $this->signedInUserQuery->execute(),
+          'threadId' => $this->getParam('threadId'),
+          'latestEntry' => $this->latestEntryQuery->execute(),
+          'errors' => 'something went wrong'
+        ]);
+      }
+    }            
+  }
 }

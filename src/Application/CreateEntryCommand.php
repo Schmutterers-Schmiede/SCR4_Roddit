@@ -8,9 +8,11 @@
       private \Application\Services\AuthenticationService $authenticationService
     ){}
 
-    public function execute(int $userId, int $threadId, string $text) {  
+    public function execute(int $userId, int $threadId, string $text):bool {  
       if($this->authenticationService->getUserId() === $userId){
-        $this->threadRepository->createEntry($userId, $threadId, $text);      
-      }                      
+        $this->threadRepository->createEntry($userId, $threadId, $text);  
+        return true;    
+      }             
+      else return false;      
     }
   }

@@ -9,6 +9,7 @@ final class ThreadsQuery {
 
   public function execute() : array {
     $res = [];
+    $resEntries = [];
     foreach ($this->threadRepository->getAllThreads() as $t) {
       $entries = $t->getEntries();      
       foreach($entries as $e){

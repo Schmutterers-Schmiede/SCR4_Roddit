@@ -9,6 +9,6 @@
 </div>
 
 <hr>
-  <?php $render('partial\\threadList', ['threads' => $data['threads']]); ?>
+<?php $render('partial\\threadList', ['threads' => $data['threads']]); ?>
 
 <?php $render('partial\\footer', $data); ?>
