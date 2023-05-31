@@ -65,7 +65,7 @@ class Threads extends \Presentation\MVC\Controller {
   }
 
   public function POST_CreateEntry(): \Presentation\MVC\ViewResult {
-    $threadId = $this->getParam('threadId');
+    $threadId = (int)$this->getParam('threadId');
     $text = $this->getParam('text');
     $userId = $this->signedInUserQuery->execute()->id;
     if(strlen($this->getParam('text')) === 0){
@@ -85,6 +85,7 @@ class Threads extends \Presentation\MVC\Controller {
           'user' => $this->signedInUserQuery->execute(),          
           'title' => $thread->title,
           'entries' => $thread->entries,
+          'threadId' => $thread->id,
           'latestEntry' => $this->latestEntryQuery->execute(),          
         ]);
       }
