@@ -274,7 +274,7 @@ implements
     // +----------------------------------------------------------------+
 
   public function createEntry(int $userId, int $threadId, string $text){    
-      $timestamp = date('Y-m-dTH:i:s');
+      $timestamp = date('Y-m-d\TH:i:s');
       $con = $this->getConnection();
       $con->autocommit(false);
       $stat = $this->executeStatement(
