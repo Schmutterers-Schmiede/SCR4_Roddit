@@ -4,7 +4,7 @@
 
     <tr style="height: 3rem;">
       <div>
-        <td><strong><?php $link($thread->title, 'Threads', 'Thread', ['tid' => $thread->id, 'title' => $thread->title],  cssClass: 'nav-link'); ?></strong></td>
+        <td><strong><?php $link($thread->title, 'Threads', 'Thread', ['tid' => $thread->id],  cssClass: 'nav-link'); ?></strong></td>
         <td>
             <?php if($thread->entryCount > 0) :?>
               Last entry posted by ü\<?php $htmlOut($thread->lastEntryUserName);?>
