@@ -194,7 +194,7 @@ implements
                                             ORDER BY timestamp ASC;',
       function($s) use ($id){$s->bind_param('i', $id);});      
       $threadStat->bind_result($threadId, $username, $title, $timestamp);
-      $threadStat->fetch();
+      
       if(count($entriesForThread) === 0)
         $result = new \Application\Entities\Thread($threadId, $username, $title, new \DateTime($timestamp), []);
       else
