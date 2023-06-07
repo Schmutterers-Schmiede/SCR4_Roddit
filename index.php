@@ -27,6 +27,7 @@ $sp->register(\Infrastructure\Repository::class, function (){return new \Infrast
 $sp->register(\Infrastructure\Session::class, isSingleton: true);
 $sp->register(\Infrastructure\FakeRepository::class, isSingleton: true);
 $sp->register(\Application\Interfaces\ThreadRepository::class, \Infrastructure\Repository::class);
+$sp->register(\Application\Interfaces\EntryRepository::class, \Infrastructure\Repository::class);
 $sp->register(\Application\Interfaces\UserRepository::class, \Infrastructure\Repository::class);
 $sp->register(\Application\Interfaces\Session::class, \Infrastructure\Session::class);
 // === Presentation

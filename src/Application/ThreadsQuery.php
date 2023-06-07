@@ -11,15 +11,16 @@ final class ThreadsQuery {
   public function execute() : array {
     $res = [];
     $resEntries = [];
+    $user = $this->signedInUserQuery->execute();
     foreach ($this->threadRepository->getAllThreads() as $t) {
       $entries = $t->getEntries();      
       foreach($entries as $e){
-        $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getTimeStamp(), $e->getText());
+
+        $entryDeletable = $user !== null && $user->userName === $e->getUserName();
+        $resEntries[] = new \Application\EntryData($e->getId(), $e->getUserName(), $e->getTimeStamp(), $e->getText(), $entryDeletable);
       }
-      $deletable = false;
-      $user = $this->signedInUserQuery->execute();
-      if($user != null && $user->userName === $t->getUserName()) 
-        $deletable = true;
+
+      $threadDeletable = $user !== null && $user->userName === $t->getUserName();
       
       
       if(count($resEntries) === 0)
@@ -28,14 +29,14 @@ final class ThreadsQuery {
                                   $t->getTitle(), 
                                   $t->getTimeStamp(), 
                                   [], 
-                                  $deletable);
+                                  $threadDeletable);
       else
         $res[] = new ThreadData(  $t->getUserName(), 
                                   $t->getId(), 
                                   $t->getTitle(), 
                                   $t->getTimeStamp(), 
                                   $resEntries, 
-                                  $deletable);
+                                  $threadDeletable);
       $resEntries = [];
     }
     return $res; //array of ThraedData with EntryData arrays

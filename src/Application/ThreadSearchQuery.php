@@ -6,7 +6,7 @@ class ThreadSearchQuery
 {
     public function __construct(
         private Interfaces\ThreadRepository $threadRepository,
-        private Services\AuthenticationService $authenticationService
+        private \Application\SignedInUserQuery $signedInUserQuery
     ) {
     }
 
@@ -15,14 +15,17 @@ class ThreadSearchQuery
         $res = [];
         foreach ($this->threadRepository->getThreadsForFilter($filter) as $thread) {
           foreach($thread->getEntries() as $e) {
-            $resEntries[] = new \Application\EntryData($e->getUserName(), $e->getTimeStamp(), $e->getText());
+            $entryDeletable = $this->signedInUserQuery->execute()->userName === $e->getUserName();
+            $resEntries[] = new \Application\EntryData($e->getId(), $e->getUserName(), $e->getTimeStamp(), $e->getText(), $entryDeletable);
           }
-            $res[] = new \Application\ThreadData( $thread->getUserName(), 
-                                                  $thread->getId(),
-                                                  $thread->getTitle(),
-                                                  $thread->getTimeStamp(),
-                                                  $resEntries,
-                                                  $this->authenticationService->getUserId() === $thread->getId());
+          $user = $this->signedInUserQuery->execute();
+          $threadDeletable = $user !== null && $user->userName === $thread->getUserName();
+          $res[] = new \Application\ThreadData( $thread->getUserName(), 
+                                                $thread->getId(),
+                                                $thread->getTitle(),
+                                                $thread->getTimeStamp(),
+                                                $resEntries,
+                                                $threadDeletable);
         }
         return $res;
     }

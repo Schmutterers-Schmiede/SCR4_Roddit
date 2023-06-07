@@ -11,7 +11,15 @@
         posted by ü/<?php $htmlOut($entry->userName);?>
         <time style="margin-left: 30px;"><?php $htmlOut($entry->timestamp->format('d.m.Y H:i:s'));?></time>
         <p style="margin-top: 10px;"><?php $htmlOut($entry->text);?></p>
-      </td>        
+      </td>   
+      <td>
+        <?php if($entry->deletable): ?>     
+          <?php $beginForm('Entries', 'DeleteEntry',['author' => $entry->userName, 'entryId' => $entry->id],  method: 'post', cssClass: 'form-inline'); ?>    
+            <button style="align-self: end" class="btn btn-danger">Delete</button>
+          <?php $endForm(); ?>  
+        <?php endif; ?>     
+      </td>
+
     </tr>
   <?php endforeach; ?>
 </table>

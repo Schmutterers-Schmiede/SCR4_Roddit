@@ -5,7 +5,8 @@ namespace Infrastructure;
 class Repository
 implements
     \Application\Interfaces\ThreadRepository,
-    \Application\Interfaces\UserRepository
+    \Application\Interfaces\UserRepository,
+    \Application\Interfaces\EntryRepository
 {
     private $server;
     private $userName;
@@ -335,7 +336,22 @@ implements
     return $latestEntry;      
   }
 
-  
+  public function deleteEntry(int $entryId){
+    $con = $this->getConnection();
+    $con->autocommit(false);
+
+    $stat = $this->executeStatement(
+      $con,
+      'DELETE FROM entries WHERE entryId = ?',
+      function($s) use ($entryId){
+        $s->bind_param('i', $entryId);
+      }
+    );
+
+    $stat->close();
+    $con->commit();
+    $con->close();
+  }
 
 }
 

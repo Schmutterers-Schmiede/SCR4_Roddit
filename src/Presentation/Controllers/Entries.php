@@ -8,7 +8,9 @@ class Entries extends \Presentation\MVC\Controller {
     private \Application\SignedInUserQuery $signedInUserQuery,
     private \Application\CreateEntryCommand $createEntryCommand,
     private \Application\LatestEntryQuery $latestEntryQuery,
-    private \Application\ThreadByIdQuery $threadByIdQuery
+    private \Application\ThreadByIdQuery $threadByIdQuery,
+    private \Application\ThreadsQuery $threadsQuery,
+    private \Application\DeleteEntryCommand $deleteEntryCommand
   ){}
 
   public function GET_PostEntry(): \Presentation\MVC\ViewResult {
@@ -55,4 +57,26 @@ class Entries extends \Presentation\MVC\Controller {
       }
     }            
   }
+
+  public function POST_DeleteEntry(): \Presentation\MVC\ViewResult{
+    if($this->signedInUserQuery->execute()->userName === $this->getParam('author')){
+      //authorization successful
+      $this->deleteEntryCommand->execute($this->getParam('threadId'));
+      return new \Presentation\MVC\ViewResult('home', [
+        'user' => $this->signedInUserQuery->execute(),
+        'threads' => $this->threadsQuery->execute(),
+        'latestEntry' => $this->latestEntryQuery->execute()
+      ]);
+    }
+    //hacker attack
+    return new \Presentation\MVC\ViewResult('home', [
+      'user' => $this->signedInUserQuery->execute(),
+      'threads' => $this->threadsQuery->execute(),
+      'latestEntry' => $this->latestEntryQuery->execute(),
+      'errors' => 'You are not authorized to delete this entry'
+    ]);
+  }
+    
+
+  
 }
