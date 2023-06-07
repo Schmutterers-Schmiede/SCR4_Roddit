@@ -7,7 +7,8 @@ readonly final class ThreadData {
     public string $id,
     public string $title,
     public \DateTime $timestamp,
-    public array $entries
+    public array $entries,
+    public bool $deletable
     ){
       if(count($entries) !== 0){
         $this->lastEntryUserName = $entries[0]->userName;

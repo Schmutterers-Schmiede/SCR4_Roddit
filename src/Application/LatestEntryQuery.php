@@ -9,11 +9,15 @@ class LatestEntryQuery
     ) {
     }
 
-    public function execute(): \Application\EntryInfoData
+    public function execute(): ?\Application\EntryInfoData
     {
       
       $resEntryData = $this->threadRepository->getLatestEntry();
-      $res = new \Application\EntryInfoData($resEntryData->getThreadTitle(), $resEntryData->getUserName(), $resEntryData->getTimeStamp());
-      return $res;
+      if($resEntryData != null)
+        $res = new \Application\EntryInfoData($resEntryData->getThreadTitle(), $resEntryData->getUserName(), $resEntryData->getTimeStamp());
+      else
+        $res = null;
+      
+        return $res;
     }
 }

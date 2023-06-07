@@ -5,7 +5,8 @@ namespace Application;
 class ThreadSearchQuery
 {
     public function __construct(
-        private Interfaces\ThreadRepository $threadRepository
+        private Interfaces\ThreadRepository $threadRepository,
+        private Services\AuthenticationService $authenticationService
     ) {
     }
 
@@ -20,7 +21,8 @@ class ThreadSearchQuery
                                                   $thread->getId(),
                                                   $thread->getTitle(),
                                                   $thread->getTimeStamp(),
-                                                  $resEntries);
+                                                  $resEntries,
+                                                  $this->authenticationService->getUserId() === $thread->getId());
         }
         return $res;
     }

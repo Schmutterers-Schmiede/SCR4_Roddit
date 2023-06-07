@@ -4,11 +4,13 @@ namespace Presentation\Controllers;
 use Presentation\MVC\ViewResult;
 
 class Threads extends \Presentation\MVC\Controller {
-  public function __construct(
+  public function __construct(    
+    private \Application\ThreadsQuery $threadsQuery,
     private \Application\ThreadByIdQuery $threadByIdQuery,
     private \Application\SignedInUserQuery $signedInUserQuery,
     private \Application\ThreadSearchQuery $threadSearchQuery,
     private \Application\CreateThreadCommand $createThreadCommand,
+    private \Application\DeleteThreadCommand $deleteThreadCommand,
     private \Application\CreateEntryCommand $createEntryCommand,
     private \Application\LatestEntryQuery $latestEntryQuery
   ){}
@@ -53,6 +55,25 @@ class Threads extends \Presentation\MVC\Controller {
       'user' => $this->signedInUserQuery->execute(),      
       'errors' => ['This thread already exists'],
       'latestEntry' => $this->latestEntryQuery->execute()
+    ]);
+  }
+
+  public function POST_DeleteThread(): \Presentation\MVC\ViewResult{
+    if($this->signedInUserQuery->execute()->userName === $this->getParam('author')){
+      //authorization successful
+      $this->deleteThreadCommand->execute($this->getParam('threadId'));
+      return new \Presentation\MVC\ViewResult('home', [
+        'user' => $this->signedInUserQuery->execute(),
+        'threads' => $this->threadsQuery->execute(),
+        'latestEntry' => $this->latestEntryQuery->execute()
+      ]);
+    }
+    //hacker attack
+    return new \Presentation\MVC\ViewResult('home', [
+      'user' => $this->signedInUserQuery->execute(),
+      'threads' => $this->threadsQuery->execute(),
+      'latestEntry' => $this->latestEntryQuery->execute(),
+      'errors' => 'You are not authorized to delete this sübröddit'
     ]);
   }
 

@@ -9,4 +9,5 @@ interface ThreadRepository {
   public function createThread(int $userId, string $title);
   public function createEntry(int $threadId, int $userId, string $text);
   public function getLatestEntry();
+  public function deleteThread(int $threadId);
 }

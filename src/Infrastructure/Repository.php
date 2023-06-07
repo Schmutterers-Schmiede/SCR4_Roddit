@@ -134,10 +134,10 @@ implements
 
       $con = $this->getConnection();
       //get all entries
-      $entryRes = $this->executeQuery($con, 'SELECT entryId, threadId, userName, timestamp, text
-                                                    FROM entries
-                                                    JOIN users ON entries.userId = users.userId                                                    
-                                                    ORDER BY timestamp ASC;'
+      $entryRes = $this->executeQuery($con,  'SELECT entryId, threadId, userName, timestamp, text
+                                              FROM entries
+                                              JOIN users ON entries.userId = users.userId                                                    
+                                              ORDER BY timestamp ASC;'
       );               
       while($e = $entryRes->fetch_object()) {
         $entries[] = new \Application\Entities\Entry($e->entryId, $e->threadId, $e->userName, new \DateTime($e->timestamp), $e->text);
@@ -254,7 +254,7 @@ implements
       return $threads;
     }
     public function createThread(int $userId, string $title){
-      $date = date('Y-m-dTH:i:s');
+      $date = date('Y-m-d\TH:i:s');
       $con = $this->getConnection();
       $con->autocommit(false);
       $stat = $this->executeStatement(
@@ -264,6 +264,31 @@ implements
           $s->bind_param('iss', $userId, $title, $date);
         }
       );
+      $stat->close();
+      $con->commit();
+      $con->close();
+    }
+
+    public function deleteThread(int $threadId){
+      $con = $this->getConnection();
+      $con->autocommit(false);
+
+      $stat = $this->executeStatement(
+        $con,
+        'DELETE FROM entries WHERE threadId = ?',
+        function($s) use ($threadId){
+          $s->bind_param('i', $threadId);
+        }
+      );
+
+      $stat = $this->executeStatement(
+        $con,
+        'DELETE FROM threads WHERE threadId = ?',
+        function($s) use ($threadId){
+          $s->bind_param('i', $threadId);
+        }
+      );
+
       $stat->close();
       $con->commit();
       $con->close();
@@ -289,7 +314,7 @@ implements
       $con->close();
   }
 
-  public function getLatestEntry(){
+  public function getLatestEntry(): ?\Application\Entities\EntryInfo{
     
     $con = $this->getConnection();      
 
@@ -301,10 +326,16 @@ implements
                                                 LIMIT 1;',
     );
     $e = $entryInfoRes->fetch_object();
-    $latestEntry = new \Application\Entities\EntryInfo($e->title, $e->userName, new \DateTime($e->timestamp));
+    if($e !== null)
+      $latestEntry = new \Application\Entities\EntryInfo($e->title, $e->userName, new \DateTime($e->timestamp));
+    else 
+      $latestEntry = null;
+      
     $con->close();      
     return $latestEntry;      
   }
+
+  
 
 }
 

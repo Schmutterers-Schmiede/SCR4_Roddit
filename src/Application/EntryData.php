@@ -6,6 +6,7 @@ class EntryData {
   public function __construct(
     public string $userName,    
     public \DateTime $timestamp,
-    public string $text
+    public string $text,
+    public bool $deletable = false
     ){}
 }
