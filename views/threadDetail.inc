@@ -2,7 +2,7 @@
 
 <table class="table align-middle">
   <h1><?php $htmlOut($data['title']); ?></h1>
-  <?php $beginForm('Threads', 'PostEntry', ['threadId' => $data['threadId']], method: 'get', cssClass: 'form-inline'); ?>    
+  <?php $beginForm('Entries', 'PostEntry', ['threadId' => $data['threadId']], method: 'get', cssClass: 'form-inline'); ?>    
     <button style="align-self: end" class="btn btn-secondary">Compose Entry</butto>
   <?php $endForm(); ?>
   <?php foreach ($data['entries'] as $entry) : ?>

@@ -31,9 +31,10 @@ $sp->register(\Application\Interfaces\UserRepository::class, \Infrastructure\Rep
 $sp->register(\Application\Interfaces\Session::class, \Infrastructure\Session::class);
 // === Presentation
 $sp->register(\Presentation\MVC\MVC::class, function() {return new \Presentation\MVC\MVC(); }); //implicitly converted to string
+$sp->register(\Presentation\Controllers\Entries::class);
 $sp->register(\Presentation\Controllers\Home::class);
-$sp->register(\Presentation\Controllers\User::class);
 $sp->register(\Presentation\Controllers\Threads::class);
+$sp->register(\Presentation\Controllers\User::class);
 //(new \Presentation\MVC\MVC())->handleRequest($sp);
 $sp->resolve(\Presentation\MVC\MVC::class)->handleRequest($sp);
 
