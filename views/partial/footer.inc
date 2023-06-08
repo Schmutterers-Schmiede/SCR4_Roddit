@@ -1,4 +1,5 @@
 </div>
+
 <footer class="container">
   <?php if($data['latestEntry'] !== null): ?>
     <div style="display:flex; gap: 50px; width: 800px;">
