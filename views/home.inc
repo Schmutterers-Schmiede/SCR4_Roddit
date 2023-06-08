@@ -3,7 +3,7 @@
 <div style="display:flex; justify-content: space-between;">
   <?php if($data['user'] !== null): ?>
     <?php $beginForm('Threads', 'PostThread', method: 'get', cssClass: 'form-inline'); ?>    
-      <button style="align-self: end" class="btn btn-primary">Create Thread</butto>
+      <button style="align-self: end" class="btn btn-primary">Create sübröddit</butto>
     <?php $endForm(); ?>
   <?php endif; ?>
 </div>

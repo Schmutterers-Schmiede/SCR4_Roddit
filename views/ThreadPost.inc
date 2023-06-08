@@ -1,6 +1,6 @@
 <?php $render('partial/header', $data); ?>
 
-<h1>Create new Thread</h1>
+<h1>Create new sübröddit</h1>
 
 <?php $beginForm('Threads', 'CreateThread',['userId' => $data['user']->id], method: 'post'); ?>
   <div class="mb-3">
