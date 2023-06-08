@@ -45,8 +45,24 @@ class Threads extends \Presentation\MVC\Controller {
   }
 
   public function POST_CreateThread(): \Presentation\MVC\ActionResult {
-    $userId = $this->getParam('user')->id;
-    if($this->createThreadCommand->execute($userId, $this->getParam('title')) === 0){
+    $userId = $this->getParam('userId');
+    $title = $this->getParam('title');
+    if(strlen($title) === 0){
+      return $this->view('threadPost', [
+        'user' => $this->signedInUserQuery->execute(),      
+        'errors' => ['No Title entered.'],
+        'latestEntry' => $this->latestEntryQuery->execute()
+      ]);
+    }
+    if($this->signedInUserQuery->execute() === null){
+      return new \Presentation\MVC\ViewResult('home', [
+        'user' => $this->signedInUserQuery->execute(),
+        'threads' => $this->threadsQuery->execute(),
+        'latestEntry' => $this->latestEntryQuery->execute(),
+        'errors' => ['Action denied']
+      ]);
+    }
+    if($this->createThreadCommand->execute($userId, $title) === 0){
       //Creation successful -> go to home
       return $this->redirect('Home', 'Index');
     }

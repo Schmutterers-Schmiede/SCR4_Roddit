@@ -14,12 +14,15 @@ class ThreadByIdQuery
     {
       $resEntries = [];
       $thread = $this->threadRepository->getThreadById($id);
-      $entries = $thread->getEntries();      
+      $entries = $thread->getEntries(); 
+      $signedInUser = $this->signedInUserQuery->execute();
       foreach($entries as $e){
-        $entryDeletable = $this->signedInUserQuery->execute()->userName === $e->getUserName();
+        if($signedInUser === null) $entryDeletable = false;
+        else $entryDeletable = $this->signedInUserQuery->execute()->userName === $e->getUserName();
         $resEntries[] = new \Application\EntryData($e->getId(), $e->getUserName(), $e->getTimeStamp(), $e->getText(), $entryDeletable);
       }
-      $threadDeletable = $this->signedInUserQuery->execute()->userName === $thread->getUserName();
+      if($signedInUser === null) $threadDeletable = false;
+      else $threadDeletable = $signedInUser->userName === $thread->getUserName();
       $res = new \Application\ThreadData( $thread->getUserName(), 
                                           $thread->getId(), 
                                           $thread->getTitle(),

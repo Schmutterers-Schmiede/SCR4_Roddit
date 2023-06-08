@@ -2,7 +2,7 @@
 
 <h1>Create new Thread</h1>
 
-<?php $beginForm('Threads', 'CreateThread',['user' => $data['user']], method: 'post'); ?>
+<?php $beginForm('Threads', 'CreateThread',['userId' => $data['user']->id], method: 'post'); ?>
   <div class="mb-3">
       <label for="title" class="form-label">Title:</label>
       <input class="form-control" id="title" name="title">

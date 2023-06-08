@@ -14,6 +14,7 @@ class ThreadSearchQuery
     {
         $res = [];
         foreach ($this->threadRepository->getThreadsForFilter($filter) as $thread) {
+          $resEntries = [];
           foreach($thread->getEntries() as $e) {
             $entryDeletable = $this->signedInUserQuery->execute()->userName === $e->getUserName();
             $resEntries[] = new \Application\EntryData($e->getId(), $e->getUserName(), $e->getTimeStamp(), $e->getText(), $entryDeletable);

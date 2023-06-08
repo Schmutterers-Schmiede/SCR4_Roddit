@@ -2,9 +2,11 @@
 
 <table class="table align-middle">
   <h1><?php $htmlOut($data['title']); ?></h1>
-  <?php $beginForm('Entries', 'PostEntry', ['threadId' => $data['threadId']], method: 'get', cssClass: 'form-inline'); ?>    
-    <button style="align-self: end" class="btn btn-secondary">Compose Entry</butto>
-  <?php $endForm(); ?>
+  <?php if($data['user'] !== null): ?>
+    <?php $beginForm('Entries', 'PostEntry', ['threadId' => $data['threadId']], method: 'get', cssClass: 'form-inline'); ?>    
+      <button style="align-self: end" class="btn btn-secondary">Compose Entry</butto>
+    <?php $endForm(); ?>
+  <?php endif; ?>
   <?php foreach ($data['entries'] as $entry) : ?>
     <tr>
       <td>          
@@ -14,7 +16,7 @@
       </td>   
       <td>
         <?php if($entry->deletable): ?>     
-          <?php $beginForm('Entries', 'DeleteEntry',['author' => $entry->userName, 'entryId' => $entry->id],  method: 'post', cssClass: 'form-inline'); ?>    
+          <?php $beginForm('Entries', 'DeleteEntry',['author' => $entry->userName, 'entryId' => $entry->id, 'threadId' => $data['threadId']],  method: 'post', cssClass: 'form-inline'); ?>    
             <button style="align-self: end" class="btn btn-danger">Delete</button>
           <?php $endForm(); ?>  
         <?php endif; ?>     

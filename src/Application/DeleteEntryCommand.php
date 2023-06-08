@@ -8,6 +8,6 @@
     ){}
 
     public function execute(int $entryId) {       
-      $this->entryRepository->deleteThread($entryId);      
+      $this->entryRepository->deleteEntry($entryId);      
     }     
   }
