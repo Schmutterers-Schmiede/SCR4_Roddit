@@ -17,7 +17,7 @@
       <td>
         <?php if($entry->deletable): ?>     
           <?php $beginForm('Entries', 'DeleteEntry',['author' => $entry->userName, 'entryId' => $entry->id, 'threadId' => $data['threadId']],  method: 'post', cssClass: 'form-inline'); ?>    
-            <button style="align-self: end" class="btn btn-danger">Delete</button>
+            <button style="align-self: end" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this entry?')">Delete</button>
           <?php $endForm(); ?>  
         <?php endif; ?>     
       </td>

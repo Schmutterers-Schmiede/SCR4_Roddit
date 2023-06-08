@@ -91,7 +91,7 @@ class Threads extends \Presentation\MVC\Controller {
       'user' => $this->signedInUserQuery->execute(),
       'threads' => $this->threadsQuery->execute(),
       'latestEntry' => $this->latestEntryQuery->execute(),
-      'errors' => 'You are not authorized to delete this sübröddit'
+      'errors' => ['Action denied.']
     ]);
   }
 

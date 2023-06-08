@@ -23,7 +23,7 @@
           <td>
             <?php if($thread->deletable): ?>
               <?php $beginForm('Threads', 'DeleteThread',['author' => $thread->userName, 'threadId' => $thread->id],  method: 'post', cssClass: 'form-inline'); ?>    
-                <button style="align-self: end" class="btn btn-danger">Delete</button>
+                <button style="align-self: end" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this sübröddit?')">Delete</button>
               <?php $endForm(); ?>              
             <?php endif; ?>
           </td>
