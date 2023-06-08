@@ -45,17 +45,19 @@ class Threads extends \Presentation\MVC\Controller {
   }
 
   public function POST_CreateThread(): \Presentation\MVC\ActionResult {
-    $userId = $this->signedInUserQuery->execute()->id;
-    if($this->createThreadCommand->execute($userId, $this->getParam('title'))){
+    $userId = $this->getParam('user')->id;
+    if($this->createThreadCommand->execute($userId, $this->getParam('title')) === 0){
       //Creation successful -> go to home
       return $this->redirect('Home', 'Index');
     }
-    //Creation unsuccessful -> reload Create Thread page with error
-    return $this->view('threadPost', [
-      'user' => $this->signedInUserQuery->execute(),      
-      'errors' => ['This thread already exists'],
-      'latestEntry' => $this->latestEntryQuery->execute()
-    ]);
+    else{
+      //Creation unsuccessful -> reload Create Thread page with error
+      return $this->view('threadPost', [
+        'user' => $this->signedInUserQuery->execute(),      
+        'errors' => ['A thread with this name already exists'],
+        'latestEntry' => $this->latestEntryQuery->execute()
+      ]);
+    }
   }
 
   public function POST_DeleteThread(): \Presentation\MVC\ViewResult{

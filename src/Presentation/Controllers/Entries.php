@@ -25,37 +25,34 @@ class Entries extends \Presentation\MVC\Controller {
     $threadId = (int)$this->getParam('threadId');
     $text = $this->getParam('text');
     $userId = $this->signedInUserQuery->execute()->id;
-    if(strlen($this->getParam('text')) === 0){
+    if(strlen($text) === 0){
       //ERROR: no text entered
-      return $this->view('threadPost', [
+      return $this->view('entryPost', [
         'user' => $this->signedInUserQuery->execute(),
         'threadId' => $threadId,
         'latestEntry' => $this->latestEntryQuery->execute(),
-        'errors' => 'No text entered'
+        'errors' => ['No text entered']
       ]);
     }
-    else{
-      if($this->createEntryCommand->execute($userId, $threadId, $text)){
-        //creation successful         
-        $thread = $this->threadByIdQuery->execute($threadId);
-        return new ViewResult('threadDetail', [          
-          'user' => $this->signedInUserQuery->execute(),          
-          'title' => $thread->title,
-          'entries' => $thread->entries,
-          'threadId' => $thread->id,
-          'latestEntry' => $this->latestEntryQuery->execute(),          
-        ]);
-      }
-      else{
-        //hacker attack
-        return new ViewResult('threadPost', [
-          'user' => $this->signedInUserQuery->execute(),
-          'threadId' => $this->getParam('threadId'),
-          'latestEntry' => $this->latestEntryQuery->execute(),
-          'errors' => 'something went wrong'
-        ]);
-      }
+    else if($userId !== (int)$this->getParam('userId')){
+      //invalid user id
+      return new ViewResult('entryPost', [
+        'user' => $this->signedInUserQuery->execute(),
+        'threadId' => $this->getParam('threadId'),
+        'latestEntry' => $this->latestEntryQuery->execute(),
+        'errors' => ['Action denied.']
+      ]);
     }            
+    //creation successful         
+    $this->createEntryCommand->execute($userId, $threadId, $text);
+    $thread = $this->threadByIdQuery->execute($threadId);
+    return new ViewResult('threadDetail', [          
+      'user' => $this->signedInUserQuery->execute(),          
+      'title' => $thread->title,
+      'entries' => $thread->entries,
+      'threadId' => $thread->id,
+      'latestEntry' => $this->latestEntryQuery->execute(),          
+    ]);        
   }
 
   public function POST_DeleteEntry(): \Presentation\MVC\ViewResult{
@@ -73,7 +70,7 @@ class Entries extends \Presentation\MVC\Controller {
       'user' => $this->signedInUserQuery->execute(),
       'threads' => $this->threadsQuery->execute(),
       'latestEntry' => $this->latestEntryQuery->execute(),
-      'errors' => 'You are not authorized to delete this entry'
+      'errors' => ['You are not authorized to delete this entry']
     ]);
   }
     

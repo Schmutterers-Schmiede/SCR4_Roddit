@@ -315,6 +315,27 @@ implements
       $con->close();
   }
 
+  public function getEntryById(int $id): ?\Application\Entities\Entry {
+    $con = $this->getConnection();      
+    //I know the line below is unnecessary, but my IDE wouldn't shut up about unassigned variables
+    $entryId = 0; $entryTid = 0; $entryUserName = ''; $entryTimestamp = ''; $text = '';
+
+    $entryStat = $this->executeStatement($con, 'SELECT entryId, threadId, userName, timestamp, text
+                                                FROM entries
+                                                JOIN users
+                                                ON entries.userId = users.userId
+                                                WHERE entryId = ?
+                                                ORDER BY timestamp DESC;',
+    function($s) use ($id){$s->bind_param('i', $id);});
+    $entryStat->bind_result($entryId, $entryTid, $entryUserName, $entryTimestamp, $text);  
+    $entryStat->fetch();
+    $result = new \Application\Entities\Entry ($entryId, $entryTid, $entryUserName, new \DateTime($entryTimestamp), $text);
+
+    $con->close();    
+    $entryStat->close();
+    return $result;
+  }
+
   public function getLatestEntry(): ?\Application\Entities\EntryInfo{
     
     $con = $this->getConnection();      

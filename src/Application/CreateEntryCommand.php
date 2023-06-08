@@ -4,15 +4,14 @@
 
   class CreateEntryCommand{
     public function __construct(
-      private Interfaces\ThreadRepository $threadRepository,  
-      private \Application\Services\AuthenticationService $authenticationService
+      private Interfaces\EntryRepository $entryRepository,        
     ){}
 
-    public function execute(int $userId, int $threadId, string $text):bool {  
-      if($this->authenticationService->getUserId() === $userId){
-        $this->threadRepository->createEntry($userId, $threadId, $text);  
-        return true;    
-      }             
-      else return false;      
-    }
+    //exit codes:
+    //0 - success
+    //1 - entry already exists
+    public function execute(int $userId, int $threadId, string $text){                
+        $this->entryRepository->createEntry($userId, $threadId, $text);    
+    }             
   }
+  
