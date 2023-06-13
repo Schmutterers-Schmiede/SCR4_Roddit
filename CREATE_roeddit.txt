@@ -15,15 +15,12 @@ CREATE TABLE `users` (
   `passwordHash` char(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `users` (`userId`, `userName`, `passwordHash`) VALUES
-(1, 'scr4', '$2y$10$0dhe3ngxlmzgZrX6MpSHkeoDQ.dOaceVTomUq/nQXV0vSkFojq.VG');
-
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userId`),
   ADD UNIQUE KEY `userName` (`userName`);
 	
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 	
 -- +=============================================+
 -- |                   THREADS                   |
@@ -36,13 +33,10 @@ CREATE TABLE `threads` (
   `timestamp` DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `threads` (`threadId`, `userId`, `title`, `timestamp`) VALUES
-(1, 1, 'PHP is awesome!', '2023-12-4T12:12:12');
-
 ALTER TABLE `threads`
   ADD PRIMARY KEY (`threadId`),
   ADD UNIQUE KEY `title` (`title`),
-  MODIFY `threadId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `threadId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
   
 ALTER TABLE `threads`
   ADD CONSTRAINT fk_threads_userId
@@ -61,11 +55,6 @@ CREATE TABLE `entries` (
   `text` VARCHAR(2000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `entries` (`entryId`, `userId`, `threadId`, `timestamp`, `text`) VALUES
-(1, 1, 1, '2023-12-4T12:12:12', 'Please help! I am being held against my will!');
-
-INSERT INTO `entries` (`entryId`, `userId`, `threadId`, `timestamp`, `text`) VALUES
-(1, 1, 1, '2023-12-5T12:12:12', 'Please end my suffering!');
 
 ALTER TABLE `entries`
   ADD PRIMARY KEY (`entryId`),  
@@ -79,3 +68,118 @@ ALTER TABLE `entries`
   ADD CONSTRAINT fk_threadId
   FOREIGN KEY (threadId)
   REFERENCES threads(threadId);
+
+-- +===============================================+
+-- |                   TEST DATA                   |
+-- +===============================================+
+
+INSERT INTO `users` (`userName`, `passwordHash`) 
+VALUES ('scr4', '$2y$10$0dhe3ngxlmzgZrX6MpSHkeoDQ.dOaceVTomUq/nQXV0vSkFojq.VG');
+
+INSERT INTO `users` (`userName`, `passwordHash`) 
+VALUES ('detlev', '$2y$10$4Q/stcP.Hy9zhr7/q.7kCeZrps/KRnASOaHwc6BmGqcYXWDruu8rK');
+
+INSERT INTO `users` (`userName`, `passwordHash`) 
+VALUES ('bob', '$2y$10$6X5Bpyj.ZzJXcrzIOw/iLOrLlG/Ud/VuQtPOyquIR3qk4wN3dGq92');
+
+INSERT INTO `users` (`userName`, `passwordHash`) 
+VALUES ('arnold', '$2y$10$6X5Bpyj.ZzJXcrzIOw/iLOrLlG/Ud/VuQtPOyquIR3qk4wN3dGq92');
+
+INSERT INTO `users` (`userName`, `passwordHash`) 
+VALUES ('rickSanchez', '$2y$10$djzOvbh/M6izY5ZSsRQJ0eEFIwYnUOTeTGSKzyMJBfnGm24W.Hb1W');
+
+
+
+
+
+INSERT INTO `threads` (`userId`, `title`, `timestamp`) 
+VALUES (1, 'PHP is awesome!', '2023-4-12T12:12:12');
+
+INSERT INTO `threads` (`userId`, `title`, `timestamp`) 
+VALUES (2, 'Knees weak...', '2023-4-13T12:12:12');
+
+INSERT INTO `threads` (`userId`, `title`, `timestamp`) 
+VALUES (3, 'Star Wars Quotes', '2023-4-14T12:12:12');
+
+INSERT INTO `threads` (`userId`, `title`, `timestamp`) 
+VALUES (4, 'Terminator quotes', '2023-4-15T12:12:12');
+
+INSERT INTO `threads` (`userId`, `title`, `timestamp`) 
+VALUES (5, 'book recommendations', '2023-4-16T12:12:12');
+
+INSERT INTO `threads` (`userId`, `title`, `timestamp`) 
+VALUES (1, 'delete test', '2023-4-17T12:12:12');
+
+
+
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (1, 1, '2023-7-4T12:12:12', 'Please help! I am being held against my will!');
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (2, 1, '2023-7-5T12:12:12', 'Please end my suffering!');
+
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (1, 2, '2023-12-5T12:12:12', 'Arms are heavy...');
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (4, 2, '2023-12-7T12:12:12', 'There\'s vomit on his sweater already...');
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (2, 2, '2023-12-8T12:12:12', 'Mom\'s Spaghetti!!!');
+
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (3, 3, '2023-9-5T12:12:12', 'This is where the fun begins.');
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (1, 3, '2023-9-6T12:12:12', 'I love democracy.');
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (2, 3, '2023-9-7T12:12:12', 'Flying is for droids!');
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (4, 3, '2023-9-8T12:12:12', "It\'s over Anakin. I have the high ground.");
+
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (4, 4, '2023-6-7T12:12:12', "Hasta la vista, baby.");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (2, 4, '2023-6-8T12:12:12', "I need your boots, your clothes and your motorcycle.");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (3, 4, '2023-6-9T12:12:12', "You are terminated.");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (1, 4, '2023-6-10T12:12:12', "Your confusion is not rational. She\'s a healthy female of breeding age.");
+
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (1, 5, '2023-8-9T12:12:12', "The King Killer Chronicles by Patrick Rothfuss");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (2, 5, '2023-8-10T12:12:12', "Harry Potter by J.K. Rowling");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (3, 5, '2023-8-11T12:12:12', "The Stormlight Archives by Brandon Sanderson");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (4, 5, '2023-8-12T12:12:12', "The Metro series by Dmitry Glukhovsky");
+
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (1, 6, '2023-12-1T12:12:12', "test");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (2, 6, '2023-12-2T12:12:12', "test");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (3, 6, '2023-12-3T12:12:12', "test");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (4, 6, '2023-12-4T12:12:12', "test");
+
+INSERT INTO `entries` (`userId`, `threadId`, `timestamp`, `text`) 
+VALUES (5, 6, '2023-12-5T12:12:12', 'test');
