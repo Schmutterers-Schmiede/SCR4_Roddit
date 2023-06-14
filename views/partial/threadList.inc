@@ -12,12 +12,15 @@
             padding-right: 10px;
             border-radius: 10px;
             margin-top: 10px;
+            height: 80px;
+            min-width: 1000px;
           }
           .threadCard-meta,
           .threadCard-meta-author,
           .threadCard-meta-lastEntry,
           .threadCard-meta-lastEntry-author,
-          .threadCard-meta-lastEntry-time
+          .threadCard-meta-lastEntry-time,
+          .threadCard-meta-entryCount        
           {
             display: flex; 
             flex-direction: row;     
@@ -34,6 +37,14 @@
             right: 10px;
             top: 10px;
           }
+          .threadCard-meta-author {            
+            width: 200px;
+          }
+          .threadCard-meta-lastEntry-author {
+            width: 300px;
+          }
+
+          
 
         </style>
         <div class="threadCard">
@@ -43,6 +54,11 @@
             <div class="threadCard-meta-author">
               <pre>Created by ü\</pre> 
               <?php $htmlOut($thread->userName);?>
+            </div>
+
+            <div class="threadCard-meta-entryCount">
+              <?php $htmlOut($thread->entryCount);?>
+              <pre> entries</pre> 
             </div>
             
             <?php if($thread->entryCount > 0) :?>

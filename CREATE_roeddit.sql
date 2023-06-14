@@ -77,16 +77,16 @@ INSERT INTO `users` (`userName`, `passwordHash`)
 VALUES ('scr4', '$2y$10$0dhe3ngxlmzgZrX6MpSHkeoDQ.dOaceVTomUq/nQXV0vSkFojq.VG');
 
 INSERT INTO `users` (`userName`, `passwordHash`) 
-VALUES ('detlev', '$2y$10$4Q/stcP.Hy9zhr7/q.7kCeZrps/KRnASOaHwc6BmGqcYXWDruu8rK');
+VALUES ('detlev', '$2y$10$aw5Cwa/7d8U5d.8pIPSMEu.B7vSo75B8MhqbqfgpV9upPSvtm88Pm');
 
 INSERT INTO `users` (`userName`, `passwordHash`) 
-VALUES ('bob', '$2y$10$6X5Bpyj.ZzJXcrzIOw/iLOrLlG/Ud/VuQtPOyquIR3qk4wN3dGq92');
+VALUES ('bob', '$2y$10$oONze35NXSz0oqI5MCG15OJzQ3tKxrZ2b5CkR21doiCg9zxNiejwq');
 
 INSERT INTO `users` (`userName`, `passwordHash`) 
-VALUES ('arnold', '$2y$10$6X5Bpyj.ZzJXcrzIOw/iLOrLlG/Ud/VuQtPOyquIR3qk4wN3dGq92');
+VALUES ('arnold', '$2y$10$DUAV8EAzGhaJnlQ.FLit/ecbx/p..KXjxZr8hokVWr0G3RmagO/w2');
 
 INSERT INTO `users` (`userName`, `passwordHash`) 
-VALUES ('rickSanchez', '$2y$10$djzOvbh/M6izY5ZSsRQJ0eEFIwYnUOTeTGSKzyMJBfnGm24W.Hb1W');
+VALUES ('rickSanchez', '$2y$10$HILXaiJZwKX.jFkCmWgfCeLx3kg7LCTqmqxc.MUfFh/F3v2.9Zsta');
 
 
 
