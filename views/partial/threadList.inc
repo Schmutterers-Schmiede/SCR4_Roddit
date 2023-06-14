@@ -35,7 +35,8 @@
           .deleteButton{
             position: absolute;
             right: 10px;
-            top: 10px;
+            top: 25%;
+            align-self: end;
           }
           .threadCard-meta-author {            
             width: 200px;
@@ -78,7 +79,7 @@
           </div>
           <?php if($thread->deletable): ?>
             <?php $beginForm('Threads', 'DeleteThread',['author' => $thread->userName, 'threadId' => $thread->id],  method: 'post', cssClass: 'form-inline'); ?>    
-              <button style="align-self: end" class="btn btn-danger deleteButton" onclick="return confirm('Are you sure you want to delete this sübröddit?')">Delete</button>
+              <button class="btn btn-danger deleteButton" onclick="return confirm('Are you sure you want to delete this sübröddit?')">Delete</button>
             <?php $endForm(); ?>              
           <?php endif; ?>
           
